@@ -1,0 +1,48 @@
+
+                        <div class="row">
+                            <div class="col-md-9">
+                                <fieldset>
+                                <legend>Previous Washing</legend>
+                                <div class='row'>
+                                    <div class="col-md-4">
+                                 <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" ng-model="$ctrl.object.values.prev_wash_notneed">
+                                    <label class="form-check-label">Not Need</label>
+                                  </div>
+                                  <prev-wash key-var="tow" object="$ctrl.object" key-var='tbo'></prev-wash>
+                                    </div>
+                                    <div class="col-md-4">
+                                  <prev-wash key-var="tbo" object="$ctrl.object" key-var='tbo'></prev-wash>
+                                    </div>
+                                    <div class="col-md-4">
+                                  <prev-wash key-var="tbt" object="$ctrl.object" key-var='tbo'></prev-wash>
+                                    </div>
+                                </div>
+   
+
+
+                                </fieldset>
+                            </div>
+                            <div class="col-md-3 border">
+<prev-wash-other object='$ctrl.object'></prev-wash-other>
+                                <h5>Boutan</h5> 
+                                 <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" ng-model="$ctrl.object.values.boutan">
+                                    <label class="form-check-label">Boutan</label>
+                                  </div>
+                                <h5>Hand setting</h5>
+                                 <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" ng-model="$ctrl.object.values.hand_setting">
+                                    <label class="form-check-label">Hand Setting</label>
+                                  </div>
+                                <h5>Rust Prevention</h5>
+                                 <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" ng-model="$ctrl.object.values.rust_prevention">
+                                    <label class="form-check-label">Rust Prevention</label>
+                                  </div>
+<select ng-model='$ctrl.object.values.rust_prevention_comment'  class='form-control' style='font-size:smaller'>
+    <option ng-value="k" ng-repeat="(k,v) in $ctrl.rustPrevChoice">{{ v }}</option>
+</select>
+                            </div>
+
+                        </div>

@@ -1,0 +1,112 @@
+{% extends "job/job_list.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Job Prepare" "job-prepare" %}
+{% endblock %}
+{% block main %}
+<h1>Job Prepare</h1>
+<form method="post">{% csrf_token %}
+
+{{ searchForm | crispy }}
+<input type=submit class='btn btn-primary' value='Search'>
+</form>
+<hr>
+<form method="POST">
+    {% csrf_token %}
+<dl class='row'>
+    <dt class='col-md-2'>Part Code</dt>
+    <dd class=col-md-2>{{  part.partcode }}</dd>
+    <dt class='col-md-2'>Doc Code</dt>
+    <dd class=col-md-2>{{  part.doc_code }}</dd>
+    <dt class='col-md-2'>Bar Code</dt>
+    <dd class=col-md-2>*{{  part.doc_code }}*</dd>
+    <dt class='col-md-2'>Customer</dt>
+    <dd class=col-md-2>{{  customer.name }}</dd>
+    <dt class='col-md-2'>Design no.</dt>
+    <dd class=col-md-2>{{  part.designno }}</dd>
+    <dt class="col-md-2">
+        Part Name
+    </dt>
+    <dd class="col-md-2">
+        {{ part.partname }}
+    </dd>
+    <dt class="col-md-2">
+        Size
+    </dt>
+    <dd class="col-md-2">
+        {{ part.size }}
+    </dd>
+    
+    <dt class="col-md-2">
+        Kind of H/T
+    </dt>
+    <dd class="col-md-2">
+        {{ part.treatcd }}
+    </dd>
+    <dt class="col-md-2">
+        Material
+    </dt>
+    <dd class="col-md-2">
+        {{ part.mat }}
+    </dd>
+    <dt class="col-md-2">
+        Weigt/Pcs
+    </dt>
+    <dd class="col-md-2">
+        {{ part.kgperpc }}
+    </dd>
+</dl>
+<div class='row'>
+    <div class='col'>
+        <h3>Surface Hardness</h3>
+        HV: {{ part.low1 }} - {{ part.up1 }}<br>
+        (HRC):{{ part.low2 }} - {{ part.up2 }} <br>
+
+    {% if const %}
+    {{ const.data1 }}<br>
+    {{ part.low3 }}  - {{ part.up3 }}
+    {% endif %}
+    </div>
+    <div class='col'>
+        <h3>Core Hardness</h3>
+    {% if coolConst %}
+    <strong>{{ coolConst.data1 }}:</strong>
+    {{ part.chlow1 }}  - {{ part.chup1 }}<br>
+    {% endif %}
+    {% if coolConst2 %}
+    <strong>{{ coolConst2.data1 }}:</strong>
+    {{ part.chlow2 }}  - {{ part.chup2 }}<br>
+    {% endif %}
+    {% if otherCon %}
+    <strong>{{ coolCons.data1 }}:</strong>
+    {{ part.chlow1 }}  - {{ part.olow2 }}<br>
+    {% endif %}
+    </div>
+</div>
+<fieldset>
+    <legend>Case Depth</legend>
+    Effective {{ effpoint.data1 }}
+    E({{ part.effcriterion1}})
+    {{ part.eff_low1 }} - {{  part.eff_up1 }}mm<br>
+    Effective {{ effpoint2.data1 }}
+    E({{ part.effcriterion2}})
+    {{ part.eff_low2 }} - {{  part.eff_up2 }}mm<br>
+    Total {{ part.total_measures }} - {{ part.total_low }}mm
+</fieldset>
+<div class="row">
+    <h3>Safety Protective</h3><br>
+    {% if jobForm %}
+    {{ jobForm.safety |as_crispy_field }}
+    {% endif %}
+</div>
+</form>
+{{ part.partcode }}
+{{ part.custom_no }}
+{{ customer.name }}
+{% endblock %}
+{% block footer %}
+{{ searchForm.media }}
+{% endblock %}

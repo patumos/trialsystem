@@ -1,0 +1,79 @@
+{% extends "master/index.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Parts" "part-list" %}
+{% endblock %}
+{% block main %}
+<h1>Part List</h1>
+{% if filter %}
+<form method=get>
+    <div class=row>
+        <div class='col'>{{ filter.form.partcode | as_crispy_field }}</div>
+        <div class='col'>{{ filter.form.doc_code | as_crispy_field }}</div>
+    </div>
+    <button type='submit' class='btn btn-primary'>Search</button>
+    <a href='/master/parts/' class='btn btn-info'>Reset</a>
+
+</form>
+<hr>
+<br>
+{% endif %}
+<form method="post" action="{% url "importFile" %}" enctype="multipart/form-data">
+    {% csrf_token %}
+{{ uploadForm | crispy }}
+<input type=submit value='Upload file' class='btn btn-primary' />
+</form>
+<hr>
+<a class='btn btn-primary' href="{% url "part-create" %}">New</a>
+<hr>
+<strong>Total:</strong> {{ total }}<br><br>
+<form action="." method="get" id="pageForm">
+    <strong>Page Size:</strong>
+    <select name="page_size" onchange="pageForm.submit()" class='page-select' id="page_size">
+        <option>25</option>
+        <option>50</option>
+        <option>75</option>
+        <option>100</option>
+    </select>
+</form>
+<table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Partcode</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for f in object_list %}
+            <tr>
+                <td><a href="{% url "part-edit" f.pk %}">{{ f.custom_no  }}</a></td>
+                <td>{{ f.partcode  }}</td>
+                <td>{{ f.partname }}</td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% include "_bottom_script.html" %}
+{% endblock %}
+

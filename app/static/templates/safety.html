@@ -1,0 +1,11 @@
+    <fieldset class='mb-4'>
+        <legend>Safety</legend>
+        <!-- 
+            {{ fj.values['safety'] }} -->
+    <div class="form-check d-inline" ng-repeat="(k,v) in safetyChoices">
+        <input class="form-check-input" type="checkbox" ng-model="fj.values['safety'][k]" value="{{ k }}" id="defaultCheck1">
+        <label class="form-check-label" for="defaultCheck1">
+            {{ v }}
+        </label>
+    </div>
+    </fieldset>

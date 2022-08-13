@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% load mytags %}
+{% block content %}
+<!-- {{ obj.jobfurnance_set.all }} 
+    {{ obj.created_by }} -->
+    <form  method="post"  enctype="multipart/form-data">
+        <div class='row'>
+            <ul class="nav nav-tabs nav-pills" id="myTab" role="tablist" style="width:100%">
+                <li class="nav-item">
+                    <a class="nav-link active" id="heattreat-tab" data-toggle="tab" href="#heattreat" role="tab" aria-controls="heattreat" aria-selected="true">Heat Treatment</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' id='conveyor-tab' data-toggle="tab" href="#conveyor_tab" role="tab">Conveyor</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="batch-tvq-tab" data-toggle="tab" href="#batch_tvq_tab" role="tab" aria-controls="batch tvq" aria-selected="false">Batch TVQ</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class='nav-link' id='batch-tgc-tab' data-toggle="tab" href="#batch_tgc_tab" role="tab">Batch TGC-TRGC</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' id='batch-tbt-tab' data-toggle="tab" href="#batch_tbt_tab" role="tab">Batch TBT</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' id='tsp-tab' data-toggle="tab" href="#tsp_tab" role="tab">TSP-TSAP</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' id='tih-tab' data-toggle="tab" href="#tih_tab" role="tab">TIH</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="inspection-tab" data-toggle="tab" href="#inspection" role="tab" aria-controls="inspection" aria-selected="false">Inspection</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="setting-tab" data-toggle="tab" href="#setting" role="tab" aria-controls="setting" aria-selected="false">Setting</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="shotblast-tab" data-toggle="tab" href="#shotblast" role="tab" aria-controls="shortblast" aria-selected="false">Short Blast</a>
+                </li>
+                <li class='nav-item'>
+                    <a class="nav-link" id='export-tab' data-toggle="tab" href="#export" role="tab" aria-controls="export" aria-selected="false">Export data</a>
+                </li>
+            </ul>
+            <div class='col-md-9 col-lg-10 pt-4'>
+
+                {% csrf_token %}
+                {{ jobInspectionForms.management_form }}
+                {{ jobSettingForm.management_form }}
+                <div class="tab-content" ng-app='tohkenApp'>
+                    <div class="tab-pane fade show active" id="heattreat" role="tabpanel" aria-labelledby="heattreat">
+                        {% include "job/_partinfo.html" %}
+                        <div class="row">
+                            <div class='col-md-12 border m-3' id='safety-section'>
+                                {{ jobf.safety | as_crispy_field  }}
+                            </div>
+                        </div>
+                        <!--
+                        <fieldset>
+                            <legend class='text-center'>Heat Treatment Condition</legend>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <fieldset>
+                                <legend>Previous Washing</legend> 
+                                {{ jobf.prev_wash_notneed | as_crispy_field  }} 
+                                {{ jobf.prev_wash_trw | as_crispy_field  }} 
+                                {{ jobf.prev_wash_tow | as_crispy_field  }} 
+                                {{ jobf.prev_wash_tbo | as_crispy_field  }} 
+                                {{ jobf.prev_wash_tbt | as_crispy_field  }}
+                                </fieldset>
+                            </div>
+                            <div class="col-md-3 border">
+                                <h5>Boutan</h5> 
+                                {{ jobf.boutan | as_crispy_field }}
+                                <h5>Hand setting</h5>
+                                {{ jobf.hand_setting | as_crispy_field }}
+                                <h5>Rust Prevention</h5>
+                                {{ jobf.rust_prevention | as_crispy_field }}
+                                {{ jobf.rust_prevention_comment | as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                <fieldset>
+                                <legend>Hopper Setting</legend>
+                                {{ jobf.hopper_auto | as_crispy_field }}
+                                {{ jobf.chagerate_kg | as_crispy_field }}
+                                {{ jobf.charttime | as_crispy_field }}
+                                {{ jobf.totalweight | as_crispy_field }}
+                                {{ jobf.vibration_level | as_crispy_field }}
+                                {{ jobf.dumming_shutter_high | as_crispy_field }}
+                                </fieldset>
+                            </div>
+
+                        </div>
+                        </fieldset>
+                        <hr>
+                        <fieldset>
+                        <legend class='text-center'>Furnances</legend>
+
+                        <!-- 
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#jobModal">
+                            Add Furnance
+                        </button> -->
+                        <hr>
+                        {% verbatim %}
+                        <div class='row'>
+                            <div class='col-md-12 mb-2'>
+                                <div ng-controller="TemplateFormCtrl" ng-init="init()">
+                                    <div class='form-group'>
+                                        <div class='row'>
+                                            <label class='float-left mr-3 col-md-2'>
+                                                Select Template
+                                            </label>
+                                    <select ng-model="model.template" class='form-control float-left col-md-5'>
+                                        <option value="{{ key }}" ng-repeat="(key, v) in templateMap">{{ v }}</option>
+                                    </select>
+                                    <a class='btn btn-primary' ng-click='selectTemplate(model.template)'>Select</a>
+                                        </div>
+                                    <hr>
+                                    </div>
+                                    <div>
+                                        <div ng-repeat="fj in furnanceJobs">
+                                        <ng-include src="'/static/templates/'+ fj.template_name +'.html'"></ng-include>
+                                        <a class='btn btn-danger' ng-click="deleteJf(fj)">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endverbatim %}
+                        </fieldset>
+                        <hr>
+                        <fieldset>
+                            <legend>Inspection Method by PD</legend>
+                        <div class='row'>
+                            {% if obj.main_furnance.checkq_1 and  obj.main_furnance.checkq_1 != "" %}
+                            <div class='col-md-6'>
+                                <h3 class='section'>{{ obj.main_furnance.checkq_1 }}</h3>
+                                <table class="table table-striped table-bordered hidelabel thcenter">
+
+                                    <thead>
+                                        <tr>
+                                            <th>Check</th>
+                                            <th>PD</th>
+                                            <th colspan=4 class='text-center'>Standard</th>
+                                            <th>Sent QA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Surface</td>
+                                            <td>{{  jobf.q_s_pd | as_crispy_field }}</td>
+                                            <td>{{ jobf.q_s_std | as_crispy_field  }}</td>
+                                            <td>{{ jobf.q_s_std_low | as_crispy_field }}</td>
+                                            <td>-</td>
+                                            <td>{{ jobf.q_s_std_hi | as_crispy_field }}</td>
+                                            <td rowspan=2>{{ jobf.q_s_sent_qa | as_crispy_field  }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Core</td>
+                                            <td>{{  jobf.q_c_pd | as_crispy_field }}</td>
+                                            <td>{{ jobf.q_c_std | as_crispy_field  }}</td>
+                                            <td>{{ jobf.q_c_std_low | as_crispy_field }}</td>
+                                            <td>-</td>
+                                            <td>{{ jobf.q_c_std_hi | as_crispy_field }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                {{ jobPhotoQForms.management_form }}
+                                <div class='row'>
+                                    {% for jpf in jobPhotoQForms %}
+                                    <div class='col-md-6 border'>
+                                        {{ jpf.id }}
+                                        {% if jpf.instance.photo %}
+                                        <a href='{{ jpf.instance.photo.url }}' target="_blank">
+                                            <img src="{{ jpf.instance.photo.url }}" class="img-thumbnail"></a>
+                                        {% endif %}
+                                        {{ jpf.photo | as_crispy_field }}
+                                        {{ jpf.caption | as_crispy_field }}
+                                        {% if jobPhotoQForms.can_delete %}
+                                        {{ jpf.DELETE | as_crispy_field  }}
+                                        {% endif %}
+                                    </div>
+                                    {% endfor %}
+                                </div></div>
+                                {% endif %}
+                                {% if obj.main_furnance.checkt_2 and  obj.main_furnance.checkt_2 != "" %}
+                                <div class='col-md-6'>
+                                    <h3 class='section'>{{ obj.main_furnance.checkt_2 }}</h3>
+                                    <table class="table table-striped table-bordered hidelabel">
+
+                                        <thead>
+                                            <tr>
+                                                <th>Check</th>
+                                                <th>PD</th>
+                                                <th colspan=4 class='text-center'>Standard</th>
+                                                <th>Sent QA</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Surface</td>
+                                                <td>{{  jobf.t_s_pd | as_crispy_field }}</td>
+                                                <td>{{ jobf.t_s_std | as_crispy_field  }}</td>
+                                                <td>{{ jobf.t_s_std_low | as_crispy_field }}</td>
+                                                <td>-</td>
+                                                <td>{{ jobf.t_s_std_hi | as_crispy_field }}</td>
+                                                <td rowspan=2>{{ jobf.t_s_sent_qa | as_crispy_field  }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Core</td>
+                                                <td>{{  jobf.t_c_pd | as_crispy_field }}</td>
+                                                <td>{{ jobf.t_c_std | as_crispy_field  }}</td>
+                                                <td>{{ jobf.t_c_std_low | as_crispy_field }}</td>
+                                                <td>-</td>
+                                                <td>{{ jobf.t_c_std_hi | as_crispy_field }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    {{ jobPhotoForms.management_form }}
+                                    <div class='row'>
+                                        {% for jpf in jobPhotoForms %}
+                                        <div class='col-md-6 border'>
+                                            {{ jpf.id }}
+                                            {% if jpf.instance.photo %}
+                                        <a href='{{ jpf.instance.photo.url }}' target="_blank">
+                                            <img src="{{ jpf.instance.photo.url }}" class="img-thumbnail"></a>
+                                            {% endif %}
+                                            {{ jpf.photo | as_crispy_field }}
+                                            {{ jpf.caption | as_crispy_field }}
+                                            {% if jobPhotoForms.can_delete %}
+                                            {{ jpf.DELETE | as_crispy_field  }}
+                                            {% endif %}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                        </div>
+                        </fieldset>
+                        -->
+                        <hr>
+                        <input type='submit' value='Save' class='btn btn-primary'/></div>
+                    <div class="tab-pane fade" id="inspection" role="tabpanel" aria-labelledby="Inspection-tab">
+                        <!-- <h1>Inspection</h1> -->
+                        <table class='table table-bordered table-striped'>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        No.
+                                    </th>
+                                    <th>Inspection Item</th>
+                                    <th>Machine</th>
+                                    <th>Sample Size/Points</th>
+                                    <th>Standard</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for jisp in jobInspectionForms %}
+                                <tr>
+                                    <td>
+                                        {{ forloop.counter  }}
+                                    </td>
+                                    <td>
+                                        {{ jisp.id }}
+
+                                        {{ jisp.inspection_item | as_crispy_field }}</td>
+                                    <td>
+                                        {{ jisp.tester | as_crispy_field }}</td>
+                                    <td>
+                                        {{ jisp.sample_size | as_crispy_field }}
+                                        {{ jisp.sample_points | as_crispy_field  }}
+                                        {{ jisp.sample_note | as_crispy_field  }}
+                                    </td>
+                                    <td>
+                                        {{ jisp.standard_note | as_crispy_field }}</td>
+                                    <td>
+                                        {% if jobInspectionForms.can_delete %}
+                                        {{ jisp.DELETE | as_crispy_field  }}
+                                        {% endif %}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include "job/conveyor.html" %}
+                    {% include "job/tvq.html" %}
+                    {% include "job/tgc.html" %}
+                    {% include "job/tbt.html" %}
+                    {% include "job/tsp.html" %}
+                    {% include "job/tih.html" %}
+                    {% include "job/setting_tab.html" %}
+                    {% include "job/shotblast.html" %}
+                    {% include "job/export.html" %}
+                </div>   
+            </div>
+            <div class='col-md-3 col-lg-2 text-white bg-dark'>
+                {{ jobf.status | as_crispy_field  }} 
+                {{ jobf.approve | as_crispy_field  }}
+                {{ jobf.version_code | as_crispy_field  }}<br>
+                {% if jobf.instance.parent_job %}
+                Parent: <a href='{% url "job-edit" jobf.instance.parent_job.pk %}' target="_blank" class='text-success'>{{ jobf.instance.parent_job.version_code }}</a><br><br>
+                {% endif %}
+                <a class='text-white btn btn-success' href="{% url "job-revision" pk=jobf.instance.pk %}">New Revision</a><br><br>
+
+                <div class="btn-group" role="group">
+                    <input type='submit' value='Save' class='btn btn-primary'/>
+                    <a class='btn btn-danger' href="{% url "job-delete" obj.pk %}" onclick="return confirm('Are you sure?')" >Delete</a>
+                </div>
+                <br>
+
+                <code class='bg-white mt-3 mb-3' style='display:block'>
+                    {{ jobf.instance.meta_data }}</code>
+                <strong>All Revisions</strong>
+                <ul>
+                    {% for j in jobf.instance.meta_data.parent %}
+                    <li><a href='{% url "job-edit" j.id %}' class='text-warning' target="_blank">{{ j.version_code  }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        </div>
+    </form>
+    <div class="modal fade" id="jobModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Select Furnance</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ f1 | crispy }}
+                        <input type='submit' value='Add Furnance' class='submit' />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block footer %}
+    {{ f1.media  }}
+    {{ jobf.media  }}
+    <script charset="utf-8">
+$(function(){
+
+        $(".furnance-form").on("submit", function(){
+            var $this = $(this);
+            console.log("fff", $this.serializeArray());
+            $this.ajaxSubmit(
+            {
+                dataType: 'json',
+                success: function(data){
+                     BootstrapDialog.show({
+                        message: 'Save Success'
+                    }); 
+                }
+            });
+           return false;
+        });
+    });
+    </script>
+    {% endblock %}
+    {% block declarevar %}
+    var loadJFUrl = "{% url "loadjobfurnance" pk=obj.id  %}";
+    var furnanceListUrl = "{% url "furnance-list-api" %}";
+    var jobGetURL = "{% url "job-get" pk=obj.id  %}";
+    var jobcreateSettingURL = "{% url "job-create-setting" pk=obj.id  %}";
+    var createSbURL = "{% url "sb-create" pk=obj.id  %}";
+    var jobAddJfURL = "{% url "job-add-jf" pk=obj.id  %}";
+    var jobSettingURL = "{% url "job-setting-get" pk=obj.id  %}";
+    var exportDataURL = "{% url "export-api" pk=obj.id  %}";
+    var sbApiURL = "{% url "sb-api" pk=obj.id  %}";
+    var sbListURL = "{% url "sb-list" pk=obj.id  %}";
+    var jobDeleteSettingURL = "{% url "job-delete-setting" %}";
+    var sbDeleteURL = "{% url "sb-delete" %}";
+    var createSettingPhotoURL = "{% url "create-setting-photo" %}";
+    var createSbPhotoURL = "{% url "create-sb-photo" %}";
+    var getSettingPhotoURL = "{% url "get-setting-photo" %}";
+    var getSbPhotoURL = "{% url "get-sb-photo" %}";
+    var updateSettingPhotoURL = "{% url "update-setting-photo" %}";
+    var sbPhotoDataURL = "{% url "update-sbphoto-data" %}";
+    var sbPhotoUploadURL = "{% url "upload-sb-photo" %}";
+    var updateSettingPhotoDataURL = "{% url "edit-setting-photo-data" %}";
+    var jobFurnanceUploadUrl = "{% url "jobfurnance-upload-file" %}";
+    var photoApiURL = "{% url "photo-api" %}";
+    var UPDATE_INTERVAL = 5000;
+    {% endblock %}

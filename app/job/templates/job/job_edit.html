@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% load mytags %}
+{% block content %}
+<!-- {{ obj.jobfurnance_set.all }} 
+    {{ obj.created_by }} -->
+    <form  method="post"  enctype="multipart/form-data"  name='submitForm' novalidate id='mainForm'>
+        <div class='row' ng-app='tohkenApp'>
+            {% verbatim %}
+            <ul class="nav nav-tabs nav-pills" id="myTab" role="tablist" style="width:100%" ng-controller="TabCtrl">
+                <li class="nav-item">
+                    <a class="nav-link active" id="heattreat-tab" data-toggle="tab" href="#heattreat" role="tab" aria-controls="heattreat" aria-selected="true">Part Information</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' id='conveyor-tab' data-toggle="tab" href="#conveyor_tab" role="tab">Conveyor
+                    
+                        <span class="oi" ng-class="{'oi-circle-check': tabs[0].enable}"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="batch-tvq-tab" data-toggle="tab" href="#batch_tvq_tab" role="tab" aria-controls="batch tvq" aria-selected="false">Batch TVQ
+                        <span class="oi" ng-class="{'oi-circle-check': tabs[1].enable}"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="batch-tvt" data-toggle="tab" href="#batch_tvt_tab" role="tab" aria-selected="false">Batch TVT
+                        <span class="oi" ng-class="{'oi-circle-check': tabs[2].enable}"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="batch-tfq-tft" data-toggle="tab" href="#batch_tfq_tft" role="tab" aria-selected="false">Batch TFQ,TFT
+                        <span class="oi" ng-class="{'oi-circle-check': tabs[3].enable}"></span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class='nav-link' id='batch-tgc-tab' data-toggle="tab" href="#batch_tgc_tab" role="tab">Batch TGC-TRGC
+                        <span class="oi" ng-class="{'oi-circle-check': tabs[4].enable}"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' id='batch-tbt-tab' data-toggle="tab" href="#batch_tbt_tab" role="tab">Batch TBT
+                        <span class="oi" ng-class="{'oi-circle-check': tabs[5].enable}"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' id='tih-tab' data-toggle="tab" href="#tih_tab" role="tab">Batch TIH
+                        <span class="oi" ng-class="{'oi-circle-check': tabs[6].enable}"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' id='tsz-tab' data-toggle="tab" href="#tsz_tab" role="tab">Batch TSZ
+                        <span class="oi" ng-class="{'oi-circle-check': tabs[7].enable}"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' id='tsp-tab' data-toggle="tab" href="#tsp_tab" role="tab">Batch TSP-TSAP
+                        <span class="oi" ng-class="{'oi-circle-check': tabs[8].enable}"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="inspection-tab" data-toggle="tab" href="#inspection" role="tab" aria-controls="inspection" aria-selected="false">Inspection</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="setting-tab" data-toggle="tab" href="#setting" role="tab" aria-controls="setting" aria-selected="false">Setting</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="shotblast-tab" data-toggle="tab" href="#shotblast" role="tab" aria-controls="shortblast" aria-selected="false">Short Blast</a>
+                </li>
+                <li class='nav-item'>
+                    <a class="nav-link" id='export-tab' data-toggle="tab" href="#export" role="tab" aria-controls="export" aria-selected="false">Export data</a>
+                </li>
+            </ul>
+            {% endverbatim %}
+            <div class='col-md-10 col-lg-10 pt-4'>
+
+                {% csrf_token %}
+                {{ jobInspectionForms.management_form }}
+                {{ jobSettingForm.management_form }}
+                Change Part: {{ jobf.part  }}
+                <hr>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="heattreat" role="tabpanel" aria-labelledby="heattreat">
+                        {% include "job/_partinfo.html" %}
+                        <hr>
+                        <input type='submit' value='Save' class='btn btn-primary'/></div>
+                    <div class="tab-pane fade" id="inspection" role="tabpanel" aria-labelledby="Inspection-tab">
+                        <!-- <h1>Inspection</h1> -->
+                        <div class='row'>
+                        {% for v, t in  jobf.safety_inspection.field.choices %}
+                            <div class="col-md-3">
+                                <input id="id_safety_inspection_{{ forloop.counter0 }}" name="{{ jobf.safety_inspection.name }}" type="checkbox" value="{{ v }}" {% if v in jobf.instance.safety_inspection %} checked="checked"{% endif %}>
+                                <label>{{ t }}</label>
+                            </div>
+                        {% endfor %}
+                        </div>
+                        <table class='table table-bordered table-striped'>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        No.
+                                    </th>
+                                    <th>Inspection Item</th>
+                                    <th>Machine abcc</th>
+                                    <th>Sample Size/Points</th>
+                                    <th>Photo</th>
+                                    <th>Standard</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for jisp in jobInspectionForms %}
+                                <tr>
+                                    <td>
+                                        {{ forloop.counter  }}
+                                    </td>
+                                    <td>
+                                        {{ jisp.id }}
+
+                                        {{ jisp.inspection_item | as_crispy_field }}</td>
+                                    <td>
+                                        {{ jisp.tester | as_crispy_field }}</td>
+                                    <td>
+                                        {{ jisp.sample_size | as_crispy_field }}
+                                        {{ jisp.sample_points | as_crispy_field  }}
+                                        {{ jisp.sample_note | as_crispy_field  }}
+                                    </td>
+                                    <td>
+                                        {% if jisp.instance.photo %}
+                                        <img src="{{ jisp.instance.photo.url }}" class='img-fluid'>
+                                        {% endif %}
+                                        {{ jisp.photo | as_crispy_field }}</td>
+                                    <td>
+                                        {{ jisp.standard_note | as_crispy_field }}</td>
+                                    <td>
+                                        {% if jobInspectionForms.can_delete %}
+                                        {{ jisp.DELETE | as_crispy_field  }}
+                                        {% endif %}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% include "job/bb.html" %}
+                    </div>
+                    {% include "job/conveyor.html" %}
+                    {% include "job/tvq.html" %}
+                    {% include "job/batch_tvt.html" %}
+                    {% include "job/batch_tfq_tft.html" %}
+                    {% include "job/batch_tgc_trgc.html" %}
+                    {% include "job/tbt.html" %}
+                    {% include "job/tih.html" %}
+                    {% include "job/batch_tsz.html" %}
+                    {% include "job/tsp.html" %}
+                    {% include "job/setting_tab.html" %}
+                    {% include "job/shotblast.html" %}
+                    {% include "job/export.html" %}
+                </div>   
+            </div>
+            <div class='col-md-2 col-lg-2 text-white bg-dark'>
+                {{ jobf.status | as_crispy_field  }}
+                {{ jobf.part_rank  | as_crispy_field }}
+                {{ jobf.rev_note | as_crispy_field }}
+                {{ jobf.c_no | as_crispy_field }}
+                {{ jobf.version_code | as_crispy_field  }}<br>
+                {% if jobf.instance.parent_job %}
+                Parent: <a href='{% url "job-edit" jobf.instance.parent_job.pk %}' target="_blank" class='text-success'>{{ jobf.instance.parent_job.version_code }}</a><br><br>
+                {% endif %}
+                <a class='text-white btn btn-success' href="{% url "job-revision" pk=jobf.instance.pk %}">New Revision</a><br><br>
+<!-- 
+                <div class="btn-group" role="group">
+                    <input type='submit' value='Save' class='btn btn-primary' name='submitBtn'/>
+                    <a class='btn btn-danger' href="{% url "job-delete" obj.pk %}" onclick="return confirm('Are you sure?')" >Delete</a>
+                </div> -->
+                <br>
+
+                <code class='bg-white mt-3 mb-3' style='display:block'>
+                    {{ jobf.instance.meta_data }}</code>
+                <strong>All Revisions</strong>
+                <ul>
+                    {% for j in jobf.instance.meta_data.parent %}
+                    <li><a href='{% url "job-edit" j.id %}' class='text-warning' target="_blank">{{ j.version_code  }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </form>
+    <div class="modal fade" id="jobModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Select Furnance</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ f1 | crispy }}
+                        <input type='submit' value='Add Furnance' class='submit' />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block footer %}
+    {{ f1.media  }}
+    {{ jobf.media  }}
+    <script charset="utf-8">
+$(function(){
+
+        $(".furnance-form").on("submit", function(){
+            var $this = $(this);
+            console.log("fff", $this.serializeArray());
+            $this.ajaxSubmit(
+            {
+                dataType: 'json',
+                success: function(data){
+                     BootstrapDialog.show({
+                        message: 'Save Success'
+                    }); 
+                }
+            });
+           return false;
+        });
+        var url = document.location.toString();
+        if (url.match('#!#')) {
+            $('.nav-tabs a[href="#' + url.split('#!#')[1] + '"]').tab('show');
+        }
+
+        // Change hash for page-reload
+        $('.nav-tabs a').on('shown.bs.tab', function (e) {
+            window.location.hash = e.target.hash;
+        });
+    });
+    </script>
+    {% endblock %}
+    {% block declarevar %}
+    var loadJFUrl = "{% url "loadjobfurnance" pk=obj.id  %}";
+    var furnanceListUrl = "{% url "furnance-list-api" %}";
+    var jobGetURL = "{% url "job-get" pk=obj.id  %}";
+    var jobcreateSettingURL = "{% url "job-create-setting" pk=obj.id  %}";
+    var jfAPI = "{% url "jf-api" pk=obj.id  %}";
+    var createSbURL = "{% url "sb-create" pk=obj.id  %}";
+    var jobAddJfURL = "{% url "job-add-jf" pk=obj.id  %}";
+    var jobSettingURL = "{% url "job-setting-get" pk=obj.id  %}";
+    var exportDataURL = "{% url "export-api" pk=obj.id  %}";
+    var sbApiURL = "{% url "sb-api" pk=obj.id  %}";
+    var sbListURL = "{% url "sb-list" pk=obj.id  %}";
+    var jobDeleteSettingURL = "{% url "job-delete-setting" %}";
+    var sbDeleteURL = "{% url "sb-delete" %}";
+    var createSettingPhotoURL = "{% url "create-setting-photo" %}";
+    var deleteSettingPhotoURL = "{% url "delete-setting-photo" %}";
+    var createSbPhotoURL = "{% url "create-sb-photo" %}";
+    var deleteSbPhotoURL = "{% url "delete-sbphoto" %}";
+    var getSettingPhotoURL = "{% url "get-setting-photo" %}";
+    var getSbPhotoURL = "{% url "get-sb-photo" %}";
+    var updateSettingPhotoURL = "{% url "update-setting-photo" %}";
+    var sbPhotoDataURL = "{% url "update-sbphoto-data" %}";
+    var sbPhotoUploadURL = "{% url "upload-sb-photo" %}";
+    var updateSettingPhotoDataURL = "{% url "edit-setting-photo-data" %}";
+    var jobFurnanceUploadUrl = "{% url "jobfurnance-upload-file" %}";
+    var photoApiURL = "{% url "photo-api" %}";
+    var UPDATE_INTERVAL = 2000;
+    {% endblock %}

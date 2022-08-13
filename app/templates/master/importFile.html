@@ -1,0 +1,17 @@
+{% extends "master/index.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Import File" "importFile" %}
+{% endblock %}
+{% block main %}
+<form method="post"  enctype="multipart/form-data">
+    {% csrf_token %}
+{{ uploadForm | crispy }}
+<input type=submit value='Upload file' class='btn btn-primary' />
+</form>
+<!-- 
+    {{ uploaded_file_url }} -->
+{% endblock %}

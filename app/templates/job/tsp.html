@@ -1,0 +1,58 @@
+<div class='tab-pane fade' id="tsp_tab" role="tabpanel">
+    <h1>Batch TSP-TSAP</h1>
+    <div ng-controller="TemplateForm2Ctrl" ng-init="init({{ jfs.8.id }}, 1)">
+    {% verbatim %}
+<div class='row'>
+    <div class='col'>
+    <hr>
+    <label class='float-left mr-3'>
+        Select Furnance</label>
+<select ng-model="model.furnance1" class='form-control float-left col-md-5'>
+    <option value="{{ f.id }}" ng-repeat="f in  furnance_list">{{ f.furnance }}</option>
+</select>&nbsp;&nbsp;
+        <a class='btn btn-primary' ng-click="selectFurnance(model.furnance1, fj)">Select</a>
+    </div>
+</div>
+<br>
+    <h4><input type='checkbox' class='form-control d-inline' style='width:40px' ng-model="fj.enable">Enable</h4>
+    <!--
+        {{ fj }} -->
+        <ng-include src="'/static/templates/safety.html'"></ng-include>
+        <!--
+        <prev-wash-all object="fj"></prev-wash-all>  -->
+        <br>
+        <hr>
+        <div class='row'>
+        <div class='col-md-6'>
+            <div class='form-group form-inline'>
+        Current Furnance:
+        <strong>
+            {{ fj.furnance__furnance }}</strong>
+            </div>
+            </div>
+        </div>
+        <code class="debug">
+        {{ fj }}
+        </code>
+        <table class='table table-striped table-bordered'>
+        <tr>
+            <td>PTN# <input type="text" ng-model="fj.values.qptn" /></td>
+            <td>Press Temperature</td>
+            <td>Unit</td>
+        </tr>
+        <tr ng-repeat="(key,value) in tableQ" ng-if="value != '-' && value != ''">
+         
+            <td>{{ value }}</td>
+            <td>
+                <input type="text" ng-model="fj.values['press_temp'][key]" class='form-control' />
+            </td>
+            <td ng-bind-html='tspUnit[value]'></td>
+            
+        </tr>
+        </table>
+        <hr>
+<inspection object="fj"></inspection>
+        <ng-include src="'/static/templates/bbar.html'"></ng-include>
+    {% endverbatim %}
+    </div>
+ </div>

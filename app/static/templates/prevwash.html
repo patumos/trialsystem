@@ -1,0 +1,28 @@
+
+<table class='table table-bordered table-striped'>
+    <tr>
+        <td>
+
+            <input type="checkbox"  ng-model="$ctrl.object.values[$ctrl.keyVar]">
+        </td>
+        <td>
+            {{ $ctrl.keyVar | uppercase }}
+        </td>
+    </tr>
+    <tr>
+        <td>PTN</td>
+        <td>
+            <input type='number' class="form-control" ng-model="$ctrl.object.values[$ctrl.keyVar+'_ptn']" />
+        </td>
+    </tr>
+    <tr>
+        <td>Temp</td><td>
+            <input type='number' class="form-control" ng-model="$ctrl.object.values[$ctrl.keyVar+'_temp']" />
+        </td>
+    </tr>
+    <tr>
+        <td>Time(Min)</td><td>
+            <input type='number' class="form-control" ng-model="$ctrl.object.values[$ctrl.keyVar+'_time']" />
+        </td>
+    </tr>
+</table>

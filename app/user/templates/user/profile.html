@@ -1,0 +1,37 @@
+{% extends "collapse.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <h2>My Profile</h2>
+{% if messages %}
+    {% for message in messages %}
+<div  id="card-alert" class="card {{ message.tags }}">
+    <div class="card-content white-text">
+	<p>{{ message }}</p>
+    </div>
+    <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+	<span aria-hidden="true">×</span>
+    </button>
+</div>
+    {% endfor %}
+{% endif %}
+
+<form method="post">
+
+    {% csrf_token %}
+    {% if profile_form.instance.province %}
+    <input type=hidden value="{{profile_form.instance.province}}" id="province_hidden"/>
+    {% endif %}
+    <strong>user id:</strong>{{ user.username }}
+    {{ user_form | crispy }}
+    {{ profile_form | crispy }}
+    <button type="submit" class="waves-effect waves-light  btn">Save changes</button>
+</form>
+
+
+
+</div>
+{% endblock %}

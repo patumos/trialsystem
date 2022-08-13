@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load i18n %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {% clear_breadcrumbs %}
+    {% breadcrumb "Home" "/" %}
+{% endblock %}
+{% load django_bootstrap_breadcrumbs %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+	<title>
+	 {% block title %}{% endblock %}
+	</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static "bootstrap/dist/css/bootstrap.min.css" %}"  rel="stylesheet">
+    <link href="{% static "datatables.net-dt/css/jquery.dataTables.min.css" %}"  rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static "css/dashboard.css" %}" rel="stylesheet">
+<script src="{% static "jquery/dist/jquery.min.js" %}"></script>
+<script src="{% static "js/popper.min.js" %}"></script>
+
+
+    <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+      feather.replace()
+    </script>
+    <script type="text/javascript" language="javascript" src="{% static "datatables.net/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  </head>
+
+  <body>
+    <div class='container'>
+        {% block content %}
+        {% endblock %}
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+{% block footer %}
+{% endblock %}
+  </body>
+</html>
+

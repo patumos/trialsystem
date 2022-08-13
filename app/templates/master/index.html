@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Master data" "master-index" %}
+{% endblock %}
+{% block content %}
+{% block main %}
+<h1>Master Index</h1>
+Master Main block
+{% endblock %}
+{% endblock %}
+

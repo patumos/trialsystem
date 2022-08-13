@@ -1,0 +1,8 @@
+{% if not form.instance.pk or request.user.is_superuser  %}
+ <div class="btn-group" role="group">
+                 <input type='submit' class="btn btn-primary active" value="Save">
+                 {% if form.instance.pk %}
+                 <a class="btn btn-danger active" href="{% url delete_link form.instance.pk %}"  onclick="return confirm('Are you sure?')">Delete</a>
+                 {% endif %}<br>
+             </div>
+ {% endif %}

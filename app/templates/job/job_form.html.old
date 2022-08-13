@@ -1,0 +1,89 @@
+{% extends "job/job_list.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Job Edit" "furnance-edit" job.instance.pk %}
+{% endblock %}
+{% block main %}
+<h1>Job Edit</h1>
+{{ object.jobfurnance_set }}
+<form method="post">{% csrf_token %}
+    {{ form.part  | as_crispy_field }}
+    {% include "job/_partinfo.html" %}
+    <div class="row">
+        <div class='col'>
+            <div class='inline'>
+                {{ form.safety | as_crispy_field  }}
+            </div>
+        </div>
+    </div>
+        <h4 class='text-center'>Heat Treatment Condition</h4>
+    <div class="row">
+        <div class="col">
+            <h5>Previous washing</h5>
+            {{ form.prev_wash_notneed  | as_crispy_field }}
+            {{ form.prev_wash_trw  | as_crispy_field }}
+            {{ form.prev_wash_tow  | as_crispy_field }}
+            {{ form.prev_wash_tbo  | as_crispy_field }}
+            {{ form.prev_wash_tbt  | as_crispy_field }}
+            
+        </div>
+        <div class="col">
+            {{ form.boutan  | as_crispy_field }}
+            {{ form.hand_setting  | as_crispy_field }}
+            <h5>Rust Prevention</h5>
+            {{ form.rust_prevention  | as_crispy_field }}
+            {{ form.rust_prevention_comment | as_crispy_field }}
+        </div>
+        <div class="col">
+            <h5>Hopper Setting</h5>
+            {{ form.hopper_auto  | as_crispy_field }}
+            {{ form.chagerate_kg | as_crispy_field }}
+            {{ form.charttime  | as_crispy_field }}
+            {{ form.totalweight  | as_crispy_field }}
+            {{ form.vibration_level  | as_crispy_field }}
+            {{ form.dumming_shutter_high  | as_crispy_field }}
+        </div>
+    </div>
+    <h4 class='text-center'>Furnances</h4>
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#jobModal">
+  Add Furnance
+</button>
+<!-- Modal -->
+    Select Furnaces 
+    <input type='submit' name='addfurnance-1' value="add furnance">
+    <input type="submit" class='btn btn-primary' name="update" value="Update">
+    {% if form.instance.pk is not None %}
+    <a  class='btn btn-danger' href="{% url "job-delete" form.instance.pk  %}" onclick="return confirm('Are you sure ?')">Delete</a>
+    {% endif %}
+</form>
+<div class="modal fade" id="jobModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select Furnance</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form method="POST">
+              {% csrf_token %}
+        {{ furnance_form  | crispy }}
+        <input type='submit' value='Add Furnance' />
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block footer %}
+{{ form.media }}
+{% endblock %}

@@ -1,0 +1,89 @@
+<dl class='row infobox'>
+    <dt class='col-md-2'><strong>Part Code</strong></dt>
+    <dd class=col-md-2>{{  part.partcode }}</dd>
+    <dt class='col-md-2'>Doc Code</dt>
+    <dd class=col-md-2>{{  part.doc_code }}</dd>
+    <dt class='col-md-2'>Bar Code</dt>
+    <dd class=col-md-2>*{{  part.doc_code }}*</dd>
+    <dt class='col-md-2'>Customer</dt>
+    <dd class=col-md-2>{{  customer.name }}</dd>
+    <dt class='col-md-2'>Design no.</dt>
+    <dd class=col-md-2>{{  part.designno }}</dd>
+    <dt class="col-md-2">
+        Part Name
+    </dt>
+    <dd class="col-md-2">
+        {{ part.partname }}
+    </dd>
+    <dt class="col-md-2">
+        Size
+    </dt>
+    <dd class="col-md-2">
+        {{ part.size }}
+    </dd>
+    
+    <dt class="col-md-2">
+        Kind of H/T
+    </dt>
+    <dd class="col-md-2">
+        {{ part.treatcd }}
+    </dd>
+    <dt class="col-md-2">
+        Material
+    </dt>
+    <dd class="col-md-2">
+        {{ part.mat }}
+    </dd>
+    <dt class="col-md-2">
+        Weigt/Pcs
+    </dt>
+    <dd class="col-md-2">
+        {{ part.kgperpc }}
+    </dd>
+</dl>
+<div class='row'>
+    <div class='col'>
+        <fieldset class='mb-3'>
+            <legend>Surface Hardness</legend>
+            {{ part.shtester1 }}: {{ part.low1 }} - {{ part.up1 }}<br>
+            {{ part.shtester2_con }}: {{ part.low2 }} - {{ part.up2 }} <br>
+
+    {% if const %}
+    {{ const.data1 }}<br>
+    {{ part.low3 }}  - {{ part.up3 }}
+    {% endif %}
+        </fieldset>
+    </div>
+    <div class='col'>
+        <fieldset>
+        <legend>Core Hardness</legend>
+    {% if coolConst %}
+    <strong>{{ coolConst.data1 }}:</strong>
+    {{ part.chlow1 }}  - {{ part.chup1 }}<br>
+    {% endif %}
+    {% if coolConst2 %}
+    <strong>{{ coolConst2.data1 }}:</strong>
+    {{ part.chlow2 }}  - {{ part.chup2 }}<br>
+    {% endif %}
+        </fieldset>
+    </div>
+    <div class='col'>
+        <fieldset>
+            <legend>Other Hardness</legend>
+    {% if otherCon %}
+    <strong>{{ otherCon.data1 }}:</strong>
+    {{ part.olow1 }}  - {{ part.oup1 }}<br>
+    {% endif %}
+        </fieldset>
+    </div>
+</div>
+<fieldset>
+    <legend>Case Depth</legend>
+    Effective {{ effpoint.data1 }}
+    E({{ part.effcriterion1}})
+    {{ part.eff_low1 }} - {{  part.eff_up1 }}mm<br>
+    Effective {{ effpoint2.data1 }}
+    E({{ part.effcriterion2}})
+    {{ part.eff_low2 }} - {{  part.eff_up2 }}mm<br>
+    Total {{ part.total_low }} - {{ part.total_up }}mm
+</fieldset>

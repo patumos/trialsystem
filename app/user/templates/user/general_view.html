@@ -1,0 +1,15 @@
+{% extends parent %}
+{% load materializecss %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super  }}
+    {% breadcrumb  view.label view.url  %}
+{% endblock %}
+{% block content %}
+<div class="container">
+<h1>{{ header }}</h1>
+{{ object.html | safe  }}
+</div>
+{% endblock %}

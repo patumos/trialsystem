@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Job Standard" "job-index" %}
+{% endblock %}
+{% block content %}
+{% block main %}
+<h1>Job Standard</h1>
+Job index
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% load i18n %} 
+<a class="dropdown-toggle" expanded="false" data-toggle="collapse" aria-expanded="false" href="#settingSub">
+    <i class="material-icons">settings</i>
+    Settings
+</a>
+<ul class="collapse list-unstyled" id="settingSub">
+    <li>
+        <a href="{% url "useradmin_list" %}">
+            <i class="material-icons">account_circle</i>
+            <span class="nav-text">{% trans "Users" %}</span>
+        </a>
+    </li>
+    <li>
+        <a href="{% url "user_log" %}">
+            <i class="material-icons">history</i>
+            <span class="nav-text">{% trans "User History" %}</span>
+        </a>
+    </li>
+</ul>

@@ -1,0 +1,38 @@
+{% extends parent %}
+{% load l10n %}
+{% load i18n %}
+{% load django_bootstrap_breadcrumbs %}
+{% load crispy_forms_tags %}
+
+{% block breadcrumbs %}
+    {{ block.super  }}
+    {% breadcrumb editbs.label editbs.link  %}
+{% endblock %}
+{% block content %}
+<div class="container">
+<h4>{{ headerText }}</h4>
+<!--
+{% if actionMenus %}
+{% include actionMenus with parentObject=object %} 
+{% endif %} -->
+<div id="basic">
+<form method="post" enctype="multipart/form-data" >{% csrf_token %}
+    {% include "_errors.html" %}
+    {{ form.media  }}
+    {{ form|crispy }}
+    {% if form.instance.pk is not None %}
+    <div class='form-group'>
+        <label>New Password</label>
+        <input type='password' class='form-control' name='password' />
+    </div>
+    <div class='form-group'>
+        <label>Confirm Password</label>
+        <input type='password' class='form-control' name='confirm_password' />
+    </div>
+    {% endif %}
+    {{ user_profile | crispy }}
+    {% include "_bottom_actions.html" with delete_link="useradmin_delete" %}
+</form>
+</div>
+</div>
+{% endblock %}

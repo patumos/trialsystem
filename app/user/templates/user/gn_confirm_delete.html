@@ -1,0 +1,19 @@
+{% extends parent %}
+{% load django_bootstrap_breadcrumbs %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+{% block breadcrumbs %}
+    {{ block.super  }}
+    {% breadcrumb deletebs.label deletebs.link  %}
+{% endblock %}
+    <h5>{{  header }}</h5>
+<form method="post">{% csrf_token %}
+    <p>
+    Are you sure you want to delete "{{ object }}" ?</p>
+    <p>
+    <input class="btn waves-effect waves-light red accent-2" type="submit" value="Submit" /></p>
+</form>
+<br>
+</div>
+{% endblock %}

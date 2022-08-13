@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+{% load static %}
+{% load mytags %}
+{% block content %}
+<form method="post" action="#">
+<div class="row">
+    <div class="col-9">
+	  {% include "partials/errors.html" with form=settingMethodForm %}
+      <div data-spy="scroll" data-target="#navbar-example3" data-offset="0" class="scrollspy-example-2">
+		<h1>Standard making system - Heat Job Page</h1>
+        <hr>
+                <h4 id="info" class="section-header">Information</h4>
+                <div class="row">
+                    <div class="col-md-3">{{ infoForm.doc_code | as_crispy_field }}</div>
+                    <div class="col-md-3">{{ infoForm.part_code | as_crispy_field }}</div>
+                    <div class="col-md-3">{{ infoForm.factory | as_crispy_field }}</div>
+                    <div class="col-md-3">{{ infoForm.furnance | as_crispy_field }}</div>
+                    <div class="col-md-3">{{ infoForm.date | as_crispy_field }}</div>
+                    <div class="col-md-3">{{ infoForm.revision | as_crispy_field }}</div>
+                </div>
+                {{ infoForm.revision_comment | as_crispy_field }}
+                {{ infoForm.product_photos | as_crispy_field }}
+                <h4 id='setting' class='section-header'>Setting Method</h4>
+                {{  settingMethodForm.method | as_crispy_field }}
+                <fieldset id="handField">
+                    <legend>Hand Setting</legend>
+                    {% crispy_addon settingMethodForm.pieces_per_row append="Pcs" %}
+                    {% crispy_addon settingMethodForm.row_width append="mm" %}
+                </fieldset>
+                <fieldset id="hopperField">
+                    <legend>Hopper Setting</legend>
+                    {% crispy_addon settingMethodForm.charge_rate append="Kg" %}
+                    {% crispy_addon settingMethodForm.chart_time append="sec" %}
+                    {% crispy_addon settingMethodForm.total_weight append="Kg/Hr" %}
+                    {{ settingMethodForm.vibration_level | as_crispy_field }}
+                    {% crispy_addon  settingMethodForm.dumming_shutter_high append="mm" %}
+                </fieldset>
+                <h4 id="heattreatment" class="section-header">Heat Treatment Condition</h4>
+                <div class="row row-header">
+                    <div class="col text-center">
+                        TRQ
+                    </div> 
+                    {% for i in "c"|mrange:5 %}
+                    <div class="col text-center">
+                        Zone{{i | add:1}}
+                    </div>
+                    {% endfor %}
+                    <div class="col text-center">Condition</div>
+                </div>
+                {{ trqForm.management_form  }}
+                {% for f in trqForm %}
+                <div class='form-row'>
+
+                    {% for field in f.visible_fields %}
+                    <div class="col small-input text-center">
+                        {{ field  }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <div class="row row-header">
+                    <div class="col text-center">
+                        TRT
+                    </div> 
+                    {% for i in "c"|mrange:5 %}
+                    <div class="col text-center">
+                        Zone{{i | add:1}}
+                    </div>
+                    {% endfor %}
+                    <div class="col text-center">Condition</div>
+                </div>
+                {{ trtForm.management_form  }}
+                {% for f in trtForm %}
+
+                <div class='form-row'>
+                    {% for field in f.visible_fields %}
+                    <div class="col small-input text-center">
+                        {{ field  }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <h4 id="rust" class="section-header">Rust Prevention</h4>
+                {% crispy rustForm %}
+                <h4 id="inspection" class="section-header">Inspection</h4>
+                {{ quenchingForm.management_form }}
+                <h5>Quenching</h5>
+                <table class='table table-dark'>
+                <thead>
+                    <tr>
+                        <th>Check</th>
+                        <th>PD</th>
+                        <th colspan=4>Standard</th>
+                        <th>Sent QA</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>Surface</td>
+                    <td class='td-input'>{{quenchingForm.surfacePd}}</td>
+                    <td>HV</td>
+                    <td class='td-input'>{{quenchingForm.surface_minValue}}</td>
+                    <td>-</td>
+                    <td class='td-input'>{{quenchingForm.surface_maxValue}}</td>
+                    <td rowspan=2 class='td-input'>{{ quenchingForm.sentQA }}</td>
+                </tr>    
+                <tr>
+                    <td>Core</td>
+                    <td class='td-input'>{{quenchingForm.corePd}}</td>
+                    <td>HV</td>
+                    <td class='td-input'>{{quenchingForm.core_minValue}}</td>
+                    <td>-</td>
+                    <td class='td-input'>{{quenchingForm.core_maxValue}}</td>
+                </tr>    
+                </table>
+
+                {{ temperingForm.management_form }}
+                <h5>Tempering</h5>
+                <table class='table table-dark'>
+                <thead>
+                    <tr>
+                        <th>Check</th>
+                        <th>PD</th>
+                        <th colspan=4>Standard</th>
+                        <th>Sent QA</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>Surface</td>
+                    <td class='td-input'>{{temperingForm.surfacePd}}</td>
+                    <td>HV</td>
+                    <td class='td-input'>{{temperingForm.surface_minValue}}</td>
+                    <td>-</td>
+                    <td class='td-input'>{{temperingForm.surface_maxValue}}</td>
+                    <td rowspan=2 class='td-input'>{{temperingForm.sentQA }}</td>
+                </tr>    
+                <tr>
+                    <td>Core</td>
+                    <td class='td-input'>{{temperingForm.corePd}}</td>
+                    <td>HV</td>
+                    <td class='td-input'>{{temperingForm.core_minValue}}</td>
+                    <td>-</td>
+                    <td class='td-input'>{{temperingForm.core_maxValue}}</td>
+                </tr>    
+                </table>
+                <h4 id="shotblast" class="section-header">Shot Blast</h4>
+                {{ sbForm.machine | as_crispy_field }}
+                {{ sbForm.media_size | as_crispy_field }}
+                {% crispy_addon sbForm.load append="Kg" %}
+                {% crispy_addon sbForm.time append="Min" %}
+      </div>
+    </div>
+    <div class="col-3">
+    
+      <nav id="navbar-example3" class="navbar navbar-light bg-light flex-column">
+        <nav class="nav nav-pills flex-column">
+          <a class="nav-link" href="#info">Information</a>
+          <a class="nav-link" href="#setting">Setting Method</a>
+          <a class="nav-link" href="#heattreatment">Heat Treatment Condition</a>
+          <a class="nav-link" href="#rust">Rust Prevention</a>
+          <a class="nav-link" href="#inspection">Inspection</a>
+          <a class="nav-link" href="#shotblast">Shot Blast</a>
+        </nav>
+      </nav>
+      <br>
+        <input type=submit class="btn-block btn btn-success" value="Save">
+        <input type=submit class="btn-block btn btn-danger" value="Delete">
+        <input type=submit class="btn-block btn btn-info" value="Print">
+    </div>
+  </div>
+</form>
+{% endblock %}
+{% block footer %}
+<script charset="utf-8">
+$(function(){
+    $("#handField, #hopperField").hide();
+    $('input[type=radio][name=method]').on("change", function() {
+        console.log($(this).val());
+        if(  $(this).is(':checked') == false ) 
+            return;
+        var method = $(this).val();
+        if(method == "handSetting") {
+            $("#handField").show();
+            $("#hopperField").hide();
+        }
+        if(method == "hopper") {
+            $("#handField").hide();
+            $("#hopperField").show();
+        }
+    })
+    $('input[type=radio][name=method]').trigger('change');
+});
+</script>
+{% endblock %}

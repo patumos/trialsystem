@@ -1,0 +1,18 @@
+{% extends "master/customer_list.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Customer Edit" "customer-edit" form.instance.pk %}
+{% endblock %}
+{% block main %}
+<h1>Customer Edit</h1>
+<form method="post">{% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" class='btn btn-primary' value="Update">
+    {% if form.instance.pk is not None %}
+    <a  class='btn btn-danger' href="{% url "customer-delete" form.instance.pk  %}" onclick="return confirm('Are you sure ?')">Delete</a>
+    {% endif %}
+</form>
+{% endblock %}

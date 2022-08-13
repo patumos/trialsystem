@@ -1,0 +1,108 @@
+<div class='tab-pane fade' id="batch_tfq_tft" role="tabpanel">
+    <h1>TFQ TFT</h1>
+    <code class="debug">
+    {{ jfs }}
+    </code>
+    <div ng-controller="TemplateForm2Ctrl" ng-init="init({{ jfs.3.id }})">
+    {% verbatim %}
+        <div class=row>
+            <div class=col>
+                <hr>
+                <label class='float-left mr-3'>
+                    Select Furnance</label>
+                <select ng-model="model.furnance1" class='form-control float-left col-md-5'>
+                    <option value="{{ f.id }}" ng-repeat="f in  furnance_list">{{ f.furnance }}</option>
+                </select>
+                &nbsp;&nbsp;
+                <a class='btn btn-primary' ng-click="selectFurnance(model.furnance1, fj)">Select</a>
+            </div>
+        </div>
+        <br>
+    <h4><input type='checkbox' class='form-control d-inline' style='width:40px' ng-model="fj.enable">Enable</h4>
+    <!--
+        {{ fj }} -->
+        <ng-include src="'/static/templates/safety.html'"></ng-include>
+                        <prev-wash-all object="fj"></prev-wash-all> 
+        <br>
+        <hr>
+        <div class='row'>
+        <div class='col-md-6'>
+            <div class='form-group form-inline'>
+        Current Furnance:
+        <strong>
+            {{ fj.furnance__furnance }}</strong>
+        <!--
+        <label class='mr-2 ml-3'>PTN#</label> <input type='text' ng-model="fj.values.ptn" class='form-control' /> -->
+            </div>
+            </div>
+        </div>
+        <code class="debug">
+        {{ fj }}
+        </code>
+        <table class='table table-striped table-bordered'>
+        <tr>
+            <td>PTN# <input type="text" ng-model="fj.values.qptn"  class='form-control'/></td>
+            <td ng-repeat="(key, value) in tableQ">{{ value  }}</td>
+        </tr>
+        <tr>
+         
+            <td>Temp</td>
+            <td ng-repeat="(k,v) in tableQ">
+                <input type="text" ng-model="fj.values['temp'][k]" class='form-control' />
+            </td>
+        </tr>
+        <tr>
+            <td>Time</td>
+            <td ng-repeat="(k,v) in tableQ">
+                <input type="text" ng-model="fj.values['time'][k]" class='form-control' />
+            </td>
+        </tr>
+        <tr>
+            <td>Pressure</td>
+            <td ng-repeat="(k,v) in tableQ">
+                <input type="text" ng-model="fj.values['pressure'][k]" class='form-control' />
+            </td>
+        </tr>
+        </table>
+        <table class='table table-striped table-bordered' ng-init="initTable([{label:'Transition', key:'transition1'}, {label:'Zone1', key:'zone1'}, {label:'Transition', key: 'transition2'}
+        , {label:'Zone2', key:'zone2'}, {label:'Transition', key: 'transition3'}, {label:'Zone3', key:'zone3'}, {label:'Transition', key:'transition4'}, {label:'Zone4' , key: 'zone4'}])">
+        <tr>
+            <td>PTN# <input type="text" ng-model="fj.values.tptn" class='form-control' /></td>
+            <td colspan="7">Tempering/Cooling</td>
+        </tr>
+        <tr>
+            <td>Topic</td>
+            <td ng-repeat="(key, value) in tableT">{{ value  }}</td>
+        </tr>
+        <tr>
+         
+            <td>Temp</td>
+            <td ng-repeat="(k,v) in tableT">
+                <input type="text" ng-model="fj.values['temp'][k]" class='form-control' />
+            </td>
+        </tr>
+        <tr>
+            <td>Time</td>
+            <td ng-repeat="(k,v) in tableT">
+                <input type="text" ng-model="fj.values['time'][k]" class='form-control' />
+            </td>
+        </tr>
+        <tr>
+            <td>Pressure</td>
+            <td ng-repeat="(k,v) in tableT">
+                <input type="text" ng-model="fj.values['pressure'][k]" class='form-control' />
+            </td>
+        </tr>
+        <tr>
+            <td>H2 Flow</td>
+            <td ng-repeat="(k,v) in tableT">
+                <input type="text" ng-model="fj.values['h2flow'][k]" class='form-control' />
+            </td>
+        </tr>
+        </table>
+        <hr>
+<inspection object="fj"></inspection>
+        <ng-include src="'/static/templates/bbar.html'"></ng-include>
+    {% endverbatim %}
+    </div>
+</div>

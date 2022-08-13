@@ -1,0 +1,21 @@
+
+{% extends "user/usergroup_list.html" %}
+
+{% load i18n %}
+{% load getattribute %}
+{% load django_bootstrap_breadcrumbs %}
+{% load crispy_forms_tags %}
+
+{% block breadcrumbs %}
+    {{ block.super  }}
+    {% breadcrumb "Group Edit" "usergroup_edit" object.id %}
+{% endblock %}
+{% block content %}
+<div class='container'>
+<form method="post">{% csrf_token %}
+    {{ form.media  }}
+    {{ form|crispy }}
+    {% include "forms/_bottom_actions.html" with delete_link="usergroup_delete" %}
+</form>
+</div>
+{% endblock %}

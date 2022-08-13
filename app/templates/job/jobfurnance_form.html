@@ -1,0 +1,30 @@
+{% extends "job/job_list.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% block main %}
+<h1>JobFurance Edit</h1>
+<form method="post">{% csrf_token %}
+    {{ form  | crispy }}
+    <div id="furnance_values">
+        TRQ-1 Form
+    </div>
+    <input type="submit" class='btn btn-primary' value="Update">
+    {% if form.instance.pk is not None %}
+    <a  class='btn btn-danger' href="{% url "job-delete" form.instance.pk  %}" onclick="return confirm('Are you sure ?')">Delete</a>
+    {% endif %}
+</form>
+{% endblock %}
+{% block footer %}
+{{ form.media }}
+<script charset="utf-8">
+$(function(){
+    $("#furnance_values").hide();
+    $("#id_furnance").change(function(){
+        var val = $(this).text();
+        $("#furnance_values").show();
+    });
+
+});
+</script>
+{% endblock %}

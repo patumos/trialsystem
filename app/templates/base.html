@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+{% load i18n %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {% clear_breadcrumbs %}
+    {% breadcrumb "Home" "/" %}
+{% endblock %}
+{% load django_bootstrap_breadcrumbs %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+	<title>
+	 {% block title %}{% endblock %}
+	</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static "bootstrap/dist/css/bootstrap.min.css" %}"  rel="stylesheet">
+    <link href="{% static "datatables.net-dt/css/jquery.dataTables.min.css" %}"  rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static "css/dashboard.css" %}" rel="stylesheet">
+    <link href="{% static "bootstrap4-dialog/dist/css/bootstrap-dialog.css" %}" rel="stylesheet">
+    <link href="{% static "open-iconic/font/css/open-iconic-bootstrap.css" %}" rel="stylesheet">
+    <link href="{% static "jsoneditor/dist/jsoneditor.css" %}" rel="stylesheet">
+<script src="{% static "jquery/dist/jquery.min.js" %}"></script>
+<script src="{% static "jquery-form/dist/jquery.form.min.js" %}"></script>
+<script src="{% static "js/popper.min.js" %}"></script>
+<script src="{% static "jsoneditor/dist/jsoneditor.js" %}"></script>
+
+
+    <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "bootstrap4-dialog/dist/js/bootstrap-dialog.js" %}"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+      feather.replace()
+    </script>
+    <script type="text/javascript" language="javascript" src="{% static "datatables.net/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "underscore/underscore-min.js" %}"></script>
+    <script src="{% static "angular/angular.js" %}"></script>
+    <script src="{% static "angular-sanitize/angular-sanitize.js" %}"></script>
+    <script src="{% static "angular-file-upload/dist/angular-file-upload.min.js" %}"></script>
+    <script src="{% static "js/ui-bootstrap-tpls-3.0.6.min.js" %}"></script>
+    <script>
+{% block declarevar %}
+{% endblock %}
+    </script>
+    <script src="{% static "js/main.js" %}"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <style>
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 30px;
+  z-index:10000;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  margin-bottom:1rem;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+}
+.stdbox {
+    width:60px;
+}
+.stdbox2 {
+    width:120px;
+}
+</style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Tohken Thermo</a>
+      <!--
+      <input class="form-control form-control-dark col-md-5" type="text" placeholder="Search" aria-label="Search"> -->
+      <ul class="nav px-3">
+          {% if user.is_authenticated %}
+          <li class='nav-item'>
+              <a class='nav-link text-white'>Hi {{ user.username }}!</a>
+          </li>
+          <li class='nav-item text-nowrap'>
+              <a href="{% url 'logout' %}" class='nav-link'>Logout</a>
+          </li>
+          {% endif %}
+      </ul>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="d-none d-md-block bg-light sidebar" id='mySidebar' class='sidebar'>
+         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+            <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <!--
+              <li class="nav-item">
+                <a class="nav-link active" href="#">
+                  <span data-feather="home"></span>
+                  Dashboard <span class="sr-only">(current)</span>
+                </a>
+              </li> -->
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url "job-list" %}">
+                  <span data-feather="file"></span>
+                  Trial
+                </a>
+              </li>
+              <!--
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="shopping-cart"></span>
+                  Job Standard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="bar-chart-2"></span>
+                  Reports
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="layers"></span>
+                  Integrations
+                </a>
+              </li> -->
+            </ul>
+            <!--
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              <span>Saved reports</span>
+              <a class="d-flex align-items-center text-muted" href="#">
+                <span data-feather="plus-circle"></span>
+              </a>
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="file-text"></span>
+                  Trial
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="file-text"></span>
+                  Job Standard
+                </a>
+              </li>
+            </ul> -->
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              <span>Master Data</span>
+              <a class="d-flex align-items-center text-muted" href="#">
+                <span data-feather="database"></span>
+              </a>
+            </h6>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url "customer-list" %}">
+                  <span data-feather="book-open"></span>
+                    Customers
+                </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url "furnance-list" %}">
+                  <span data-feather="book-open"></span>
+                    Furnances
+                </a>
+              </li>
+              <!--
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url "paramtemplate-list" %}">
+                  <span data-feather="book-open"></span>
+                    Param Template
+                </a>
+              </li> -->
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url "part-list" %}">
+                  <span data-feather="book-open"></span>
+                    PartMF
+                </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url "importFile" %}">
+                  <span data-feather="book-open"></span>
+                    Import Parts
+                </a>
+              </li>
+              <!--
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="book-open"></span>
+                    Safety Equipments
+                </a>
+              </li> -->
+            </ul> 
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              <span>Settings</span>
+              <a class="d-flex align-items-center text-muted" href="#">
+                <span data-feather="settings"></span>
+              </a>
+            </h6>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url "useradmin_list" %}">
+                  <span data-feather="users"></span>
+                    Users
+                </a>
+              </li>
+              <!--
+              <li class='nav-item'>
+                <a class='nav-link' onclick="$('code').toggle()">Debug</a>
+              </li> -->
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-12  ml-sm-auto  pt-3 px-4 mb-5" id='main' >
+          {% render_breadcrumbs %}
+          <button class="openbtn" onclick="openNav()">☰ Open Sidebar</button>
+ {% include 'partials/messages.html' %}
+        {% block content %}
+        {% endblock %}
+        </main>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+{% block footer %}
+{% endblock %}
+<script>
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+}
+</script>
+  </body>
+</html>
+

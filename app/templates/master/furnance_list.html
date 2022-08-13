@@ -1,0 +1,113 @@
+{% extends "master/index.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+{{ block.super }}
+{% breadcrumb "Furnances" "furnance-list" %}
+{% endblock %}
+{% block main %}
+<h1>Furnance List</h1>
+<a class='btn btn-primary' href="{% url "furnance-create" %}">New</a>
+<hr>
+{% if filter %}
+<form method=get>
+    <div class=row>
+        <div class='col'>{{ filter.form.furnance | as_crispy_field }}</div>
+        <div class='col'>{{ filter.form.furno | as_crispy_field }}</div>
+        <div class='col'>{{ filter.form.furtype | as_crispy_field }}</div>
+    </div>
+    <button type='submit' class='btn btn-primary'>Search</button>
+    <a href='/master/parts/' class='btn btn-info'>Reset</a>
+
+</form>
+<hr>
+<br>
+{% endif %}
+{% include "_paging.html" %}
+<div class='input-area p-2'>
+    <table id="example" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th rowspan=2>ID</th>
+                <th rowspan=2>Furnance</th>
+                <th colspan="8" class='text-center'>Q</th>
+                <th colspan="6" class='text-center'>T</th>
+                <th rowspan=1>Check Q</th>
+                <th rowspan=1>Check T</th>
+                <th rowspan=2>Conveyor length</th>
+                <th rowspan=1 colspan=2>Max Weight</th>
+                <th rowspan=2>Fur Type</th>
+                <th rowspan=2>Fur No.</th>
+            </tr>
+            <tr>
+                <th>Col1</th>
+                <th>Col2</th>
+                <th>Col3</th>
+                <th>Col4</th>
+                <th>Col5</th>
+                <th>Col6</th>
+                <th>Col7</th>
+                <th>Col8</th>
+                <th>Col1</th>
+                <th>Col2</th>
+                <th>Col3</th>
+                <th>Col4</th>
+                <th>Col5</th>
+                <th>Col6</th>
+                <th>1</th>
+                <th>2</th>
+                <th>Value</th>
+                <th>Unit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for f in object_list %}
+            <tr>
+                <td><a href="{% url "furnance-edit" f.pk %}">{{ f.pk  }}</a></td>
+                <td><a href="{% url "furnance-edit" f.pk %}">{{ f.furnance  }}</a></td>
+                <td>{{ f.qcol1 }}</td>
+                <td>{{ f.qcol2 }}</td>
+                <td>{{ f.qcol3 }}</td>
+                <td>{{ f.qcol4 }}</td>
+                <td>{{ f.qcol5 }}</td>
+                <td>{{ f.qcol6 }}</td>
+                <td>{{ f.qcol7 }}</td>
+                <td>{{ f.qcol8 }}</td>
+                <td>{{ f.tcol1 }}</td>
+                <td>{{ f.tcol2 }}</td>
+                <td>{{ f.tcol3 }}</td>
+                <td>{{ f.tcol4 }}</td>
+                <td>{{ f.tcol5 }}</td>
+                <td>{{ f.tcol6 }}</td>
+                <td>{{ f.checkq_1 }}</td>
+                <td>{{ f.checkt_2 }}</td>
+                <td>{{ f.coveyor_length }}</td>
+                <td>{{ f.max_weight_value }}</td>
+                <td>{{ f.max_weight_unit }}</td>
+                <td>{{ f.furtype }}</td>
+                <td>{{ f.furno }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% include "_bottom_script.html" %}
+{% endblock %}

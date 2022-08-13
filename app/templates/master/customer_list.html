@@ -1,0 +1,48 @@
+{% extends "master/index.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Furnances" "furnance-list" %}
+{% endblock %}
+{% block main %}
+<h1>Customer List</h1>
+<a class='btn btn-primary' href="{% url "furnance-create" %}">New</a>
+<hr>
+<strong>Total:</strong> {{ total }}<br><br>
+<table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for f in object_list %}
+            <tr>
+                <td><a href="{% url "customer-edit" f.pk %}">{{ f.code  }}</a></td>
+                <td>{{ f.name  }}</td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
+

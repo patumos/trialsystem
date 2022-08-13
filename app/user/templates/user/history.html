@@ -1,0 +1,39 @@
+{% extends "collapse.html" %}
+
+{% load i18n %}
+{% load getattribute %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block content %}
+<div class='container'>
+    <!-- general -->
+    <h3>User Logs</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Session</th>
+                <th>Host</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for e in objects %}
+        <tr>
+            <td>{{  e.user }}</td>
+            <td>{{ e.session_key }} </td>
+            <td>{{ e.host }} </td>
+            <td>
+            {% if e.login_time %}
+            In:{{ e.login_time }}
+            {% endif %}
+            {% if e.logout_time %}
+            / Out:{{ e.logout_time  }}
+            {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

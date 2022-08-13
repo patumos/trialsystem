@@ -1,0 +1,21 @@
+<div ng-controller="TemplateForm2Ctrl" ng-init="init({{ jfs.0.id }})">
+    {% verbatim %}
+    <div class="fixed-bottom text-light">
+        <!--
+        {{ msg }}
+        
+        <div class='float-right p-4 d-inline w-25' ng-class="{'bg-success': msg.state == 'success', 'bg-warning': msg.state == 'idle', 'bg-danger': msg.state == 'error'}">
+            {{ msg.body }}
+
+        </div> -->
+        <div class='float-right p-3 d-inline' style="background-color:#333">
+            <a class='btn btn-primary' ng-click="save(fj)">Save Data</a>
+            <!-- 
+                <a class='btn btn-danger' ng-click="deleteJf(fj)">Delete</a> -->
+                <a class="btn btn-danger" ng-href="/jobs/delete/{{ fj.job}}" onclick="return confirm('Are you sure?')">Delete</a> 
+                <!--
+                <a class="btn btn-danger" href="/jobs/delete/109" onclick="return confirm('Are you sure?')">Delete</a> -->
+        </div>
+    </div>
+    {% endverbatim %}
+</div>

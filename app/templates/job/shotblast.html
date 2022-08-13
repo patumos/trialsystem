@@ -1,0 +1,93 @@
+{% verbatim %}
+<div class="tab-pane fade" id="shotblast" role="tabpanel" aria-labelledby="Shotblast-tab">
+    <div ng-controller='ShotBlastCtrl'>
+        <div class='form-inline'>
+
+            <select ng-model='sbForm.type' ng-options="o for o in sbTypes" class='form-control'></select>&nbsp;&nbsp;
+            <a class='btn btn-primary' ng-click='createSB()'>Create Shotblast</a>
+
+        </div><hr> 
+        <!--   {{ sbs }} -->
+        <div ng-repeat='sb in sbs'>
+            <h3 class='section'>{{ sb.sb_type  }}</h3>
+            <div  ng-controller='SbFormCtrl' ng-init="initCtrl(job, sb)">
+                <!--   {{ model  }} -->
+                
+                <div class='alert text-center' ng-class="{'alert-success': msg.success, 'alert-danger':!msg.success}">
+                    <span ng-bind-html='msg.message'></span>
+                </div> 
+        <ng-include src="'/static/templates/safety.html'"></ng-include>
+                                <div class='row m-2 border  border'>
+                                    <div class='col border'>
+                                        <h3>Settings</h3>
+                                        <a class='btn btn-primary text-white' ng-click="createSbPhoto(sb,'Setting')">Create Photo</a>
+                                        <div class='row'>
+                                            <div ng-repeat='photo in settingPhotos' class='col-md-4 border p-3 mt-2 mb-2 text-center'>
+                                                <input type="file" nv-file-select="" uploader="uploader" options="{formData:[{id:photo.id}]}" /><br>
+                                                <img ng-src="/media/{{ photo.file }}"  ng-if="photo.file" class="img-thumbnail"/><br>
+                                                <input type='text' ng-model="photo.caption" placeholder='caption' />
+                                                <span class="oi oi-delete text-danger" ng-click="deleteFile(photo)"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col border'>
+                                        <h3>Shotblast method</h3>
+                                        <a class='btn btn-primary text-white' ng-click="createSbPhoto(sb,'Usage')">Create Photo</a>
+                                        <div class='row'>
+                                            <div ng-repeat='photo in usagePhotos' class='col-md-4 border p-3 mt-2 mb-2 text-center'>
+                                                <input type="file" nv-file-select="" uploader="uploader" options="{formData:[{id:photo.id}]}" /><br>
+                                                <img ng-src="/media/{{ photo.file }}"  ng-if="photo.file" class="img-thumbnail"/><br>
+                                                <input type='text' ng-model="photo.caption" placeholder='caption' />
+                                                <span class="oi oi-delete text-danger" ng-click="deleteFile(photo)"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                <table class='table table-bordered table-striped'>
+                    <tr>
+                        <td>Machine no.</td>
+                        <td colspan=2>
+                        
+                <select ng-model='model.furnance'  class='form-control' ng-change="furnanceChange()">
+           <option ng-repeat="option in furnances" ng-value="option.furnance">{{option.furnance}}</option>
+                </select>&nbsp;&nbsp;
+                        </td>
+                        <td>Media size</td>
+                        <td colspan=5>{{ model.mediaSize = mediaSize(model.furnance) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Ptn no.</td>
+                        <td><input type="number" class='form-control' ng-model='model.ptn_no' /></td>
+                        <td>Time operation</td>
+                        <td><input type='number' class='form-control' ng-model='model.time_op' /></td>
+                        <td>Min</td>
+                        <td>x</td>
+                        <td>Kgs/time</td>
+                        <td><input type='number' class='form-control' ng-model='model.kg_per_time' /></td>
+                        <td>Kgs</td>
+                    </tr>
+                    <tr ng-if="sb.sb_type == 'Hanger'">
+                        <td>No. each level</td>
+                        <td><input type="number" class='form-control' ng-model='model.no_per_level' /></td>
+                        <td>Pcs / Branch</td>
+                        <td><input type="number" class='form-control' ng-model='model.pc_per_br' /></td>
+                        <td>Use levels</td>
+                        <td><input type="number" class='form-control' ng-model='model.use_level' /></td>
+                        <td>Total</td>
+                        <td>{{ ( model.total_pcs =  model.no_per_level * model.pc_per_br * model.use_level ) | number:2}}</td>
+                    </tr>
+                    <tr ng-if="sb.sb_type == 'Hanger'">
+                        <td>Time Set(Min)</td>
+                        <td><input type="number" class='form-control' ng-model='model.time_set' /></td>
+                    </tr>
+                </table>
+                <a ng-click='deleteSb(sb)' class='btn btn-danger text-white'>Delete Shotblast</a>
+                <hr>
+        <ng-include src="'/static/templates/bbar.html'"></ng-include>
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+{% endverbatim %}

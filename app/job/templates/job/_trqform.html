@@ -1,0 +1,90 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% load mytags %}
+{% load getattributes %}
+<h3>TRQ Form</h3>
+Select Furnance
+{{ fo.furnance }}
+<form method="POST">
+    {% csrf_token %}
+<table class='table'>
+<thead>
+    <tr>
+        <th>PTN {{ fo.ptn | as_crispy_field }}</th>
+        <th>Zone1</th>
+        <th>Zone2</th>
+        <th>Zone3</th>
+        <th>Zone4</th>
+        <th>Zone5</th>
+        <th>Zone6</th>
+    </tr>
+</thead>
+
+<tr>
+    <td>Temp</td>
+    <td>{{ fo.zone1_temp  | as_crispy_field }}</td>
+    <td>{{ fo.zone2_temp  | as_crispy_field }}</td>
+    <td>{{ fo.zone3_temp  | as_crispy_field }}</td>
+    <td>{{ fo.zone4_temp  | as_crispy_field }}</td>
+    <td>{{ fo.zone5_temp  | as_crispy_field }}</td>
+    <td>{{ fo.zone6_temp  | as_crispy_field }}</td>
+</tr>
+<tr>
+    <td>CP</td>
+    <td>{{ fo.zone1_cp  | as_crispy_field }}</td>
+    <td>{{ fo.zone2_cp | as_crispy_field }}</td>
+    <td>{{ fo.zone3_cp  | as_crispy_field }}</td>
+    <td>{{ fo.zone4_cp  | as_crispy_field }}</td>
+    <td>{{ fo.zone5_cp  | as_crispy_field }}</td>
+    <td>{{ fo.zone6_cp  | as_crispy_field }}</td>
+</tr>
+<tr>
+    <td>NH</td>
+    <td>{{ fo.zone1_nh  | as_crispy_field }}</td>
+    <td>{{ fo.zone2_nh | as_crispy_field }}</td>
+    <td>{{ fo.zone3_nh  | as_crispy_field }}</td>
+    <td>{{ fo.zone4_nh  | as_crispy_field }}</td>
+    <td>{{ fo.zone5_nh  | as_crispy_field }}</td>
+    <td>{{ fo.zone6_nh  | as_crispy_field }}</td>
+</tr>
+<tr>
+    <td>RX</td>
+    <td>{{ fo.rxgas  | as_crispy_field }}</td>
+</tr>
+<tr>
+    <td>Speed time</td>
+    <td>{{ fo.speedtime  | as_crispy_field }}</td>
+</tr>
+<tr>
+    <td>Oil Temp</td>
+    <td>{{ fo.zone1_nh  | as_crispy_field }}</td>
+    <td>{{ fo.zone2_nh | as_crispy_field }}</td>
+    <td>{{ fo.zone3_nh  | as_crispy_field }}</td>
+    <td>{{ fo.zone4_nh  | as_crispy_field }}</td>
+    <td>{{ fo.zone5_nh  | as_crispy_field }}</td>
+    <td>{{ fo.zone6_nh  | as_crispy_field }}</td>
+</tr>
+    <tr>
+        <td>agigator</td>
+        <td>{{ fo.agigator_hz | as_crispy_field }}</td>
+    </tr>
+
+    <tr>
+        <td>feed pattern</td>
+        <td>{{ fo.feed_pattern | as_crispy_field }}</td>
+    </tr>
+
+    <tr>
+        <td>Cooling Fan</td>
+        <td>{{ fo.cooling_fan_no1 | as_crispy_field }}</td>
+        <td>{{ fo.cooling_fan_no2 | as_crispy_field }}</td>
+    </tr>
+
+    <tr>
+        <td>Jet Pump</td>
+        <td>{{ fo.jet_pump_no1 | as_crispy_field }}</td>
+        <td>{{ fo.jet_pump_no2 | as_crispy_field }}</td>
+    </tr>
+</table>
+<input type='submit' name="trqFormSubmit" value="Submit" />
+</form>

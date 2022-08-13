@@ -1,0 +1,32 @@
+{% extends "master/partmf_list.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Part Edit" "part-edit" form.instance.pk %}
+{% endblock %}
+{% block main %}
+<h1>Part Edit</h1>
+<form method="post"  enctype="multipart/form-data">{% csrf_token %}
+
+    <div class="row">
+        {% for f in form %}
+        <div class='col-md-3'>
+            {{ f | as_crispy_field }}</div>
+        {% endfor %}
+    </div>
+    <fieldset>
+        <legend>Photos / Files</legend>
+    {{ partphotos.management_form | crispy }}
+    {% for pp in partphotos %}
+    {{ pp | crispy  }} 
+    <hr>
+    {% endfor %}
+    </fieldset>
+    <input type="submit" class='btn btn-primary' value="Update">
+    {% if form.instance.pk is not None %}
+    <a  class='btn btn-danger' href="{% url "part-delete" form.instance.pk  %}" onclick="return confirm('Are you sure ?')">Delete</a>
+    {% endif %}
+</form>
+{% endblock %}

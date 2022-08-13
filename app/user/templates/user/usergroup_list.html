@@ -1,0 +1,21 @@
+{% extends "collapse.html" %}
+
+{% load i18n %}
+{% load getattribute %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super  }}
+    {% breadcrumb "User Group" "usergroup_list" %}
+{% endblock %}
+{% block content %}
+<div class='container'>
+    <!-- general -->
+    <h4>{{ headerText  }}</h4>
+    <ul>
+        {% for g  in object_list %}
+        <a href="{% url "usergroup_edit" g.id %}">{{ g }}</a>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

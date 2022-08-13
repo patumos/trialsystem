@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<h1>Standard Making System</h1>
+<div class="row">
+    <div class="col-md-9">
+        <form method=get>
+            <div class="row">
+                <div class="col-md-3">{{ searchForm.doc_code | as_crispy_field }}</div>
+                <div class="col-md-3">{{ searchForm.part_code | as_crispy_field }}</div>
+                <div class="col-md-3">{{ searchForm.bar_code | as_crispy_field }}</div>
+                <div class="col-md-3">{{ searchForm.factory | as_crispy_field }}</div>
+                <div class="col-md-3">{{ searchForm.from_date | as_crispy_field }}</div>
+                <div class="col-md-3">{{ searchForm.to_date | as_crispy_field }}</div>
+            </div>
+            <input type=submit class='btn btn-block btn-primary' value='Search'>
+        </form>
+        <hr>
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th>Doc Code</th>
+                <th>Part Code</th>
+                <th>Barcode</th>
+                <th>Customer</th>
+                <th>Part Name</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>011KCG362SWC</td>
+                <td>418599001</td>
+                <td>*011KCG362SWC*</td>
+                <td>KOHBYO THAILAND CO.,LTD.</td>
+                <td>MB SCREW,CHARGE UNIT FIXED</td>
+                <td>10/01/19</td>
+                <td>
+                    <a class='btn btn-sm btn-primary' href="{% url "updateform" %}">Edit</a>
+                </td>
+            </tr>
+            <tr>
+                <td>011KCG362SWC</td>
+                <td>418599001</td>
+                <td>*011KCG362SWC*</td>
+                <td>KOHBYO THAILAND CO.,LTD.</td>
+                <td>MB SCREW,CHARGE UNIT FIXED</td>
+                <td>10/01/19</td>
+                <td>
+                    <a class='btn btn-sm btn-primary'>Edit</a>
+                </td>
+            </tr>
+            <tr>
+                <td>011KCG362SWC</td>
+                <td>418599001</td>
+                <td>*011KCG362SWC*</td>
+                <td>KOHBYO THAILAND CO.,LTD.</td>
+                <td>MB SCREW,CHARGE UNIT FIXED</td>
+                <td>10/01/19</td>
+                <td>
+                    <a class='btn btn-sm btn-primary'>Edit</a>
+                </td>
+            </tr>
+            <tr>
+                <td>011KCG362SWC</td>
+                <td>418599001</td>
+                <td>*011KCG362SWC*</td>
+                <td>KOHBYO THAILAND CO.,LTD.</td>
+                <td>MB SCREW,CHARGE UNIT FIXED</td>
+                <td>10/01/19</td>
+                <td>
+                    <a class='btn btn-sm btn-primary'>Edit</a>
+                </td>
+            </tr>
+            <tr>
+                <td>011KCG362SWC</td>
+                <td>418599001</td>
+                <td>*011KCG362SWC*</td>
+                <td>KOHBYO THAILAND CO.,LTD.</td>
+                <td>MB SCREW,CHARGE UNIT FIXED</td>
+                <td>10/01/19</td>
+                <td>
+                    <a class='btn btn-sm btn-primary'>Edit</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>    
+    <div class="col-md-3">
+{% crispy form %}
+    </div>    
+</div>
+{% endblock %}
+

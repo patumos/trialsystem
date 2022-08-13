@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load django_bootstrap_breadcrumbs %}
+{% block content %}
+{{ temp }}
+{{ object }}
+<form  method="post">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <input type='submit' value='OK'/>
+</form>
+{% endblock %}
+{% block footer %}
+    {{ form.media  }}
+{% endblock %}

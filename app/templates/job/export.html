@@ -1,0 +1,36 @@
+<div class="tab-pane fade" id="export" role="tabpanel" aria-labelledby="export-tab">
+    <div ng-controller='ExportDataCtrl' ng-init='init()'>
+{% verbatim %}
+        <div class='form-group'>
+            <!--
+        <select ng-model="model.template" class='form-control float-left col-md-5'>
+            <option value="{{ key }}" ng-repeat="(key, v) in templateMap">{{ v }}</option>
+        </select> -->
+        <a class='btn btn-primary' ng-click="generate()">Create Export files</a>
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Filename</th>
+                    <th>C No.</th>
+                    <th>Version</th>
+                    <th>created at</th>
+                    <th>created by</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="e in exports">
+                    <td>{{ e.id  }}</td>
+                    <td><a href="{{  e.path  }}">{{ e.path }}</a></td>
+                    <td>{{ e.job__c_no }}</td>
+                    <td>{{ e.job__version_code }}</td>
+                    <td>{{ e.created_at  }}</td>
+                    <td>{{ e.created_by__username }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <ng-include src="'/static/templates/bbar.html'"></ng-include>
+{% endverbatim %}
+    </div><!-- controller -->
+</div>

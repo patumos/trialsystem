@@ -1,0 +1,15 @@
+FROM python:3
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /code
+WORKDIR /code
+ADD requirements.txt /code/
+RUN apt-get update && apt-get install -y \
+  gettext \
+  xfonts-thai 
+RUN wget ftp://ftp.psu.ac.th/pub/thaifonts/sipa-fonts/*ttf -P /usr/share/fonts/truetype/thai
+RUN pip install -r requirements.txt
+ADD ./app /code/
+## THE LIFE SAVER
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
+RUN chmod +x /wait
+CMD /wait && python3 manage.py runserver 0.0.0.0:8000
